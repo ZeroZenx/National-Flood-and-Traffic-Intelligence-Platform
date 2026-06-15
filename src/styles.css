@@ -559,6 +559,133 @@ main {
   background: #09212c;
 }
 
+.arcgis-map-shell,
+.arcgis-vector-map {
+  position: absolute;
+  inset: 0;
+}
+
+.arcgis-vector-map {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #09212c;
+}
+
+.arcgis-source-card {
+  position: absolute;
+  z-index: 2;
+  left: 224px;
+  top: 12px;
+  max-width: 360px;
+  padding: 9px 12px;
+  border: 1px solid rgba(84, 168, 255, 0.34);
+  background: rgba(5, 16, 24, 0.84);
+  box-shadow: var(--shadow);
+}
+
+.arcgis-source-card strong,
+.arcgis-source-card span {
+  display: block;
+}
+
+.arcgis-source-card strong {
+  font-size: 12px;
+  color: #eaf6fb;
+}
+
+.arcgis-source-card span {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.arcgis-source-card a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.arcgis-county {
+  fill: rgba(73, 105, 71, 0.72);
+  stroke: rgba(223, 238, 206, 0.5);
+  stroke-width: 1.2;
+}
+
+.arcgis-road {
+  fill: none;
+  stroke: rgba(226, 235, 217, 0.56);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.arcgis-road.highway {
+  stroke: rgba(244, 237, 196, 0.92);
+  stroke-width: 3.2;
+}
+
+.arcgis-road.primary {
+  stroke: rgba(255, 219, 126, 0.72);
+  stroke-width: 2.2;
+}
+
+.arcgis-road.secondary {
+  stroke: rgba(195, 226, 225, 0.58);
+  stroke-width: 1.6;
+}
+
+.crew-map-badge {
+  fill: rgba(3, 15, 22, 0.86);
+  stroke-width: 1.5;
+}
+
+.crew-map-badge.high {
+  stroke: var(--red);
+}
+
+.crew-map-badge.medium {
+  stroke: var(--amber);
+}
+
+.crew-map-badge.low {
+  stroke: var(--green);
+}
+
+.crew-map-label {
+  fill: white;
+  font-size: 10px;
+  font-weight: 900;
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+.arcgis-status {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(6, 22, 32, 0.84), rgba(4, 12, 18, 0.9)),
+    radial-gradient(circle at 50% 40%, rgba(24, 199, 200, 0.2), transparent 36%);
+}
+
+.arcgis-status strong {
+  font-size: 18px;
+}
+
+.arcgis-status span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.arcgis-status.error strong {
+  color: var(--red);
+}
+
 .map-viewport svg {
   width: 100%;
   height: 100%;
@@ -1131,6 +1258,14 @@ th {
 
   .map-tools {
     width: calc(100% - 78px);
+  }
+
+  .arcgis-source-card {
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 14px;
+    max-width: none;
   }
 
   .layers {

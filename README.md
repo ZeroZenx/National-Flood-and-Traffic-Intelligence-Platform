@@ -12,7 +12,7 @@ The application is a single-page command center with:
 - Traffic incident, road closure, and delay metrics.
 - Sensor health and uptime monitoring.
 - Drainage crew priority indicators.
-- A central SVG operations map with flood zones, road closures, incident markers, sensor dots, crew chips, and layer toggles.
+- A central ArcGIS-powered operations map with flood zones, road closures, incident markers, sensor dots, crew chips, and layer toggles.
 - A right-side incident inspector with status updates, assignment details, public alert draft, and incident-response SOP checklist.
 - Operational timeline and dispatch/response queue.
 - Simulated live metric updates.
@@ -26,10 +26,10 @@ The MVP intentionally uses local typed mock data instead of live integrations so
 - TypeScript
 - Vite
 - CSS modules via plain `src/styles.css`
-- Code-native SVG map rendering
+- ArcGIS REST FeatureServer map data rendered as code-native SVG
 - Local mock data in TypeScript
 
-No backend, database, authentication, or external map provider is included in this first build.
+No backend, database, or authentication is included in this first build. The map uses public ArcGIS services from the Geospatial Information Portal for Trinidad.
 
 ## Project Structure
 
@@ -102,11 +102,30 @@ The MVP supports the main operator workflows expected in a first command-center 
 
 These are frontend-only interactions for now. They prove the workflow shape before real persistence and integrations are added.
 
-## Map Strategy
+## ArcGIS Map Strategy
 
-The current map is rendered as SVG rather than using a third-party GIS provider.
+The current map is sourced from this public ArcGIS Web Map:
 
-This decision keeps the MVP:
+```text
+https://www.arcgis.com/home/item.html?id=74d07f996dc04ced9d602b90a7923a07
+```
+
+ArcGIS item metadata:
+
+- Title: `Geospatial Information Portal for Trinidad`
+- Type: `Web Map`
+- Owner: `eedwards`
+- Organization ID: `NUSHso3rgWERZOFF`
+- Item ID: `74d07f996dc04ced9d602b90a7923a07`
+
+The app pulls public ArcGIS REST/GeoJSON data from the item’s underlying FeatureServer services:
+
+- Counties: `TTO_Administrative_Boundaries/FeatureServer/6`
+- Roads: `TTO_Roads_National_Security/FeatureServer/0`
+
+The fetched county and road geometries are rendered as a code-native SVG map inside the command center. Flood, traffic, sensor, closure, and crew overlays are then plotted on top using local MVP operational data.
+
+This approach keeps the MVP:
 
 - Fast to run locally.
 - Free of API keys.
@@ -114,7 +133,7 @@ This decision keeps the MVP:
 - Easy to style to match the command-center design.
 - Ready to replace later with Mapbox, ArcGIS, Leaflet, OpenLayers, or a government GIS service.
 
-The map uses normalized `x/y` coordinates from the mock data. Future integrations should replace those with real latitude/longitude geometry.
+The operational overlays now use approximate Trinidad latitude/longitude coordinates. Future integrations should replace those simulated incident/sensor coordinates with authoritative live coordinates from agency systems.
 
 ## Run Locally
 
@@ -181,7 +200,8 @@ Current limitations:
 - No backend API.
 - No database or persistence.
 - No authentication, authorization, or agency roles.
-- No real GIS tiles or geospatial routing.
+- No full GIS viewer controls or geospatial routing yet.
+- ArcGIS county and road layers are pulled live from public FeatureServer endpoints; operational overlays are still simulated.
 - No sensor ingestion pipeline.
 - No WhatsApp, Waze, Google Maps, SMS, radio, CCTV, or weather API integration.
 - No audit log for operator actions.

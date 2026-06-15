@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import ArcGisWebMap from "./ArcGisWebMap";
 import {
   alertDrafts,
   crews as seedCrews,
-  floodZones,
   incidents as seedIncidents,
   roadClosures,
   sensors,
@@ -197,8 +197,6 @@ function OperationsMap({
   activeLayers: Record<LayerKey, boolean>;
   toggleLayer: (layer: LayerKey) => void;
 }) {
-  const visibleIncidents = activeLayers.incidents ? seedIncidents : [];
-
   return (
     <section className="map-panel">
       <div className="map-tools">
@@ -216,95 +214,7 @@ function OperationsMap({
         </div>
       </div>
       <div className="map-viewport" role="img" aria-label="Operational map of Trinidad with flood, traffic, sensor, and crew overlays">
-        <svg viewBox="0 0 1000 620" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="sea" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="#073544" />
-              <stop offset="0.58" stopColor="#0a5663" />
-              <stop offset="1" stopColor="#09202b" />
-            </linearGradient>
-            <linearGradient id="land" x1="0" x2="1">
-              <stop offset="0" stopColor="#37553f" />
-              <stop offset="0.52" stopColor="#536746" />
-              <stop offset="1" stopColor="#304636" />
-            </linearGradient>
-            <filter id="softShadow">
-              <feDropShadow dx="0" dy="8" stdDeviation="8" floodColor="#00141d" floodOpacity=".55" />
-            </filter>
-          </defs>
-          <rect width="1000" height="620" fill="url(#sea)" />
-          <path className="terrain-line" d="M75 470 C230 390 250 300 370 250 C520 176 610 130 790 160 C930 186 960 270 895 354 C824 446 670 436 540 505 C395 583 236 561 75 470Z" />
-          <path className="island" filter="url(#softShadow)" d="M82 455 C190 382 240 315 347 267 C520 190 624 135 801 173 C927 200 960 272 895 351 C815 448 673 438 548 501 C398 578 223 557 82 455Z" />
-          <path className="hill" d="M258 373 C390 310 498 255 666 244 C770 239 840 278 888 330 C810 416 650 408 526 466 C408 520 295 500 210 452 C214 421 229 394 258 373Z" />
-          <path className="road major" d="M120 442 C260 398 360 335 514 314 C642 295 780 260 900 308" />
-          <path className="road major" d="M354 252 C405 334 455 422 532 504" />
-          <path className="road" d="M218 493 C318 452 440 425 574 404 C700 385 810 382 904 352" />
-          <path className="road" d="M305 305 C390 355 473 370 590 366 C700 362 790 330 874 332" />
-          <path className="road closure" d="M380 332 C445 365 520 368 590 362" />
-          <path className="road closure" d="M385 455 C430 430 462 406 498 374" />
-          {activeLayers.radar ? <circle cx="450" cy="360" r="260" className="radar" /> : null}
-          {activeLayers.flood
-            ? floodZones.map((zone) => (
-                <circle key={zone.id} cx={zone.point.x * 10} cy={zone.point.y * 6.2} r={zone.severity === "High" ? 54 : 38} className={`flood-zone ${severityClass(zone.severity)}`} />
-              ))
-            : null}
-          {["Port of Spain", "Diego Martin", "Curepe", "Caroni", "Chaguanas", "Bamboo", "Beetham", "San Fernando"].map((label, index) => {
-            const points = [
-              [380, 290],
-              [336, 210],
-              [535, 328],
-              [374, 454],
-              [460, 520],
-              [680, 510],
-              [500, 638],
-              [362, 760],
-            ];
-            const [x, y] = points[index];
-            return (
-              <text key={label} x={x} y={Math.min(y * 0.78, 580)} className="map-label">
-                {label}
-              </text>
-            );
-          })}
-          {activeLayers.sensors
-            ? sensors.map((sensor) => (
-                <circle key={sensor.id} cx={sensor.point.x * 10} cy={sensor.point.y * 6.2} r="7" className={`sensor-dot ${sensor.status}`} />
-              ))
-            : null}
-          {activeLayers.closures
-            ? roadClosures.map((closure) => (
-                <rect key={closure.id} x={closure.point.x * 10 - 9} y={closure.point.y * 6.2 - 9} width="18" height="18" rx="4" className={`closure-dot ${severityClass(closure.severity)}`} />
-              ))
-            : null}
-          {visibleIncidents.map((incident) => (
-            <button key={incident.id} className="svg-button" onClick={() => setSelectedId(incident.id)} aria-label={incident.title}>
-              <circle cx={incident.point.x * 10} cy={incident.point.y * 6.2} r={selectedId === incident.id ? 18 : 14} className={`incident-dot ${severityClass(incident.severity)} ${selectedId === incident.id ? "selected" : ""}`} />
-              <text x={incident.point.x * 10} y={incident.point.y * 6.2 + 5} className="incident-glyph">
-                !
-              </text>
-            </button>
-          ))}
-        </svg>
-        {activeLayers.crews
-          ? seedCrews.slice(0, 4).map((crew, index) => (
-              <button
-                key={crew.id}
-                className={`crew-chip ${severityClass(crew.priority)}`}
-                style={{ left: `${31 + index * 11}%`, top: `${62 - index * 8}%` }}
-                title={crew.name}
-              >
-                {crew.type}
-              </button>
-            ))
-          : null}
-        <div className="map-controls">
-          <button>+</button>
-          <button>-</button>
-          <button>□</button>
-          <button>◆</button>
-        </div>
-        <div className="scale"><span />0 <b />5 <b />10 km</div>
-        <button className="recenter">⌖ Re-centre</button>
+        <ArcGisWebMap selectedId={selectedId} setSelectedId={setSelectedId} activeLayers={activeLayers} />
       </div>
     </section>
   );
