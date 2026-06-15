@@ -13,6 +13,8 @@ The application is a single-page command center with:
 - Sensor health and uptime monitoring.
 - Drainage crew priority indicators.
 - A central ArcGIS-powered operations map with flood zones, road closures, incident markers, sensor dots, crew chips, and layer toggles.
+- Zoom, pan, reset, fit-to-incident, bookmarks, map search, feature inspection, and layer opacity controls.
+- Simulated granular overlays for water depth, traffic-delay corridors, blocked culverts, CCTV points, and citizen reports.
 - A right-side incident inspector with status updates, assignment details, public alert draft, and incident-response SOP checklist.
 - Operational timeline and dispatch/response queue.
 - Simulated live metric updates.
@@ -71,6 +73,7 @@ Major UI subsystems:
 - `Sidebar`: operational navigation and active filter summary.
 - `DashboardMetrics`: national risk, forecast, traffic, sensor, crew, alert, and WhatsApp summary cards.
 - `OperationsMap`: code-native SVG map with interactive incident markers and toggleable operational layers.
+- `ArcGisWebMap`: viewport-driven ArcGIS REST map workspace with extent queries, search, bookmarks, feature popovers, and simulated operational overlays.
 - `IncidentInspector`: selected incident details, status controls, alert draft editor, and SOP checklist.
 - `TimelinePanel`: recent operational events.
 - `DispatchQueue`: priority queue for response assignments.
@@ -124,6 +127,20 @@ The app pulls public ArcGIS REST/GeoJSON data from the item’s underlying Featu
 - Roads: `TTO_Roads_National_Security/FeatureServer/0`
 
 The fetched county and road geometries are rendered as a code-native SVG map inside the command center. Flood, traffic, sensor, closure, and crew overlays are then plotted on top using local MVP operational data.
+
+The map now queries ArcGIS by the current viewport bounds. As operators zoom in, it progressively loads more granular layers:
+
+- National view: counties, major roads, active incidents, flood risk, crews, and sensors.
+- Regional view: wards, community/locality boundaries, primary/secondary roads, and operational overlays.
+- Street view: denser roads, road labels, parcels where available, simulated granular reports, and incident-level detail.
+
+Map operators can:
+
+- Wheel zoom, double-click zoom, drag pan, and keyboard pan/zoom.
+- Search roads, places, incidents, sensors, and flood zones.
+- Jump to priority bookmarks such as Port of Spain, Chaguanas, Caroni, Beetham, Curepe, Bamboo, San Fernando, Diego Martin, and Tobago.
+- Click roads, boundaries, incidents, sensors, closures, crews, flood zones, and simulated reports for map popovers.
+- Adjust base, road, and operational overlay opacity.
 
 This approach keeps the MVP:
 
@@ -202,6 +219,7 @@ Current limitations:
 - No authentication, authorization, or agency roles.
 - No full GIS viewer controls or geospatial routing yet.
 - ArcGIS county and road layers are pulled live from public FeatureServer endpoints; operational overlays are still simulated.
+- Map drill-down depends on the public ArcGIS FeatureServer response time and availability.
 - No sensor ingestion pipeline.
 - No WhatsApp, Waze, Google Maps, SMS, radio, CCTV, or weather API integration.
 - No audit log for operator actions.

@@ -570,6 +570,14 @@ main {
   height: 100%;
   display: block;
   background: #09212c;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.arcgis-vector-map:active,
+.arcgis-vector-map.pan-mode {
+  cursor: grabbing;
 }
 
 .arcgis-source-card {
@@ -634,6 +642,88 @@ main {
   stroke-width: 1.6;
 }
 
+.arcgis-ward {
+  fill: rgba(255, 170, 0, 0.04);
+  stroke: rgba(255, 195, 85, 0.42);
+  stroke-width: 0.8;
+}
+
+.arcgis-community {
+  fill: rgba(24, 199, 200, 0.055);
+  stroke: rgba(24, 199, 200, 0.38);
+  stroke-width: 0.75;
+}
+
+.arcgis-parcel {
+  fill: rgba(255, 255, 255, 0.012);
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 0.45;
+}
+
+.road-label {
+  fill: #ecf8fa;
+  font-size: 10px;
+  font-weight: 700;
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: rgba(0, 0, 0, 0.74);
+  stroke-width: 3px;
+}
+
+.water-depth-band,
+.traffic-delay-corridor {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.water-depth-band {
+  stroke-width: 18;
+  opacity: 0.34;
+}
+
+.water-depth-band.high {
+  stroke: #4ec9ff;
+}
+
+.water-depth-band.medium {
+  stroke: #2fa9dd;
+}
+
+.water-depth-band.low {
+  stroke: #78d8ff;
+}
+
+.traffic-delay-corridor {
+  stroke: rgba(238, 127, 45, 0.52);
+  stroke-width: 12;
+  stroke-dasharray: 18 10;
+}
+
+.report-dot {
+  stroke: white;
+  stroke-width: 1.5;
+  fill: var(--amber);
+}
+
+.report-dot.cctv {
+  fill: var(--blue);
+}
+
+.report-dot.citizen {
+  fill: var(--green);
+}
+
+.report-label {
+  fill: white;
+  font-size: 10px;
+  font-weight: 800;
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: rgba(0, 0, 0, 0.72);
+  stroke-width: 3px;
+}
+
 .crew-map-badge {
   fill: rgba(3, 15, 22, 0.86);
   stroke-width: 1.5;
@@ -684,6 +774,187 @@ main {
 
 .arcgis-status.error strong {
   color: var(--red);
+}
+
+.map-tool-strip,
+.map-search-card,
+.bookmark-rail,
+.map-opacity-panel,
+.map-status-bar,
+.map-feature-popover {
+  position: absolute;
+  z-index: 5;
+  border: 1px solid var(--line);
+  background: rgba(5, 16, 24, 0.88);
+  box-shadow: var(--shadow);
+}
+
+.map-tool-strip {
+  right: 12px;
+  top: 88px;
+  display: grid;
+  gap: 6px;
+  padding: 7px;
+}
+
+.map-tool-strip button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(148, 185, 201, 0.25);
+  background: rgba(13, 38, 51, 0.9);
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.map-tool-strip button.active {
+  border-color: var(--blue);
+  background: rgba(39, 125, 230, 0.55);
+}
+
+.map-search-card {
+  top: 62px;
+  left: 224px;
+  width: 275px;
+  padding: 8px;
+}
+
+.map-search-card input {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.map-search-results {
+  margin-top: 7px;
+  display: grid;
+  gap: 4px;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.map-search-results button {
+  display: grid;
+  gap: 2px;
+  border: 1px solid rgba(148, 185, 201, 0.16);
+  background: rgba(13, 38, 51, 0.82);
+  color: white;
+  padding: 7px;
+  text-align: left;
+}
+
+.map-search-results span {
+  color: var(--blue);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.map-search-results strong {
+  font-size: 12px;
+}
+
+.bookmark-rail {
+  left: 224px;
+  right: 60px;
+  bottom: 46px;
+  display: flex;
+  gap: 6px;
+  padding: 7px;
+  overflow-x: auto;
+}
+
+.bookmark-rail button {
+  flex: 0 0 auto;
+  border: 1px solid rgba(148, 185, 201, 0.22);
+  background: rgba(13, 38, 51, 0.9);
+  color: #dcecf1;
+  min-height: 28px;
+  padding: 0 9px;
+  font-size: 11px;
+}
+
+.map-opacity-panel {
+  right: 12px;
+  top: 318px;
+  width: 132px;
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+}
+
+.map-opacity-panel label {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.map-opacity-panel input {
+  width: 100%;
+  accent-color: var(--blue);
+}
+
+.map-status-bar {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 12px;
+  color: #c8d7dc;
+  font-size: 11px;
+  background: rgba(3, 13, 20, 0.88);
+}
+
+.map-feature-popover {
+  width: 260px;
+  transform: translate(14px, -50%);
+  padding: 11px;
+  pointer-events: auto;
+}
+
+.map-feature-popover strong,
+.map-feature-popover span,
+.map-feature-popover p {
+  display: block;
+}
+
+.map-feature-popover strong {
+  padding-right: 24px;
+  font-size: 13px;
+}
+
+.map-feature-popover span,
+.map-feature-popover p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.map-feature-popover dl {
+  margin-top: 8px;
+}
+
+.map-feature-popover dl div {
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.popover-close {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(148, 185, 201, 0.24);
+  background: rgba(13, 38, 51, 0.9);
+  color: white;
 }
 
 .map-viewport svg {
@@ -1253,19 +1524,60 @@ th {
   }
 
   .map-panel {
-    height: 520px;
+    height: 640px;
   }
 
   .map-tools {
-    width: calc(100% - 78px);
+    left: 12px;
+    right: 12px;
+    width: auto;
   }
 
   .arcgis-source-card {
     left: 12px;
     right: 12px;
     top: auto;
-    bottom: 14px;
+    bottom: 44px;
     max-width: none;
+  }
+
+  .map-search-card {
+    left: 12px;
+    right: 12px;
+    top: 230px;
+    width: auto;
+  }
+
+  .map-tool-strip {
+    right: 12px;
+    top: 350px;
+  }
+
+  .map-opacity-panel {
+    right: 12px;
+    top: 515px;
+    width: 116px;
+  }
+
+  .bookmark-rail {
+    left: 12px;
+    right: 12px;
+    bottom: 78px;
+  }
+
+  .map-feature-popover {
+    left: 12px !important;
+    right: 12px;
+    top: auto !important;
+    bottom: 118px;
+    width: auto;
+    transform: none;
+  }
+
+  .map-status-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-size: 10px;
   }
 
   .layers {
